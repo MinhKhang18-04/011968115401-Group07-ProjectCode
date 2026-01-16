@@ -1,55 +1,61 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <iomanip>
 
 using namespace std;
 
 struct Process {
     string id;
-    int at; // Arrival Time
-    int bt; // Burst Time
-    int wt; // Waiting Time
-    int tat; // Turnaround Time
-    int ct; // Completion Time
+    int at, bt, ct, wt, tat;
 };
 
-void calculateFCFS(vector<Process>& procs) {
-    // Sắp xếp theo Arrival Time (AT)
-    sort(procs.begin(), procs.end(), [](Process a, Process b) {
-        return a.at < b.at;
-    });
+int main() {
+    int n;
+    cout << "Nhap so luong tien trinh: ";
+    cin >> n;
+
+    vector<Process> p(n);
+    for (int i = 0; i < n; i++) {
+        cout << "Nhap ID, Arrival Time, Burst Time cho P" << i + 1 << ": ";
+        cin >> p[i].id >> p[i].at >> p[i].bt;
+    }
+
+    // Sap xep theo thoi gian den (Arrival Time)
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (p[i].at > p[j].at) {
+                swap(p[i], p[j]);
+            }
+        }
+    }
 
     int current_time = 0;
-    for (int i = 0; i < procs.size(); i++) {
-        if (current_time < procs[i].at) {
-            current_time = procs[i].at;
+    float sumWT = 0, sumTAT = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (current_time < p[i].at) {
+            current_time = p[i].at;
         }
-        procs[i].ct = current_time + procs[i].bt;
-        procs[i].tat = procs[i].ct - procs[i].at;
-        procs[i].wt = procs[i].tat - procs[i].bt;
-        current_time = procs[i].ct;
+        p[i].ct = current_time + p[i].bt;
+        p[i].tat = p[i].ct - p[i].at;
+        p[i].wt = p[i].tat - p[i].bt;
+        
+        current_time = p[i].ct;
+        
+        sumWT += p[i].wt;
+        sumTAT += p[i].tat;
     }
-}
 
-void display(const vector<Process>& procs) {
-    cout << "\nID\tAT\tBT\tCT\tTAT\tWT\n";
-    for (const auto& p : procs) {
-        cout << p.id << "\t" << p.at << "\t" << p.bt << "\t" 
-             << p.ct << "\t" << p.tat << "\t" << p.wt << endl;
+    // In ket qua ra man hinh
+    cout << "\nKQS: First-Come First-Served\n";
+    cout << "ID\tAT\tBT\tCT\tTAT\tWT\n";
+    for (int i = 0; i < n; i++) {
+        cout << p[i].id << "\t" << p[i].at << "\t" << p[i].bt << "\t" 
+             << p[i].ct << "\t" << p[i].tat << "\t" << p[i].wt << endl;
     }
-}
 
-int main() {
-    // Dữ liệu mẫu (Member 2 sẽ thay thế bằng việc đọc file CSV sau)
-    vector<Process> procs = {
-        {"P1", 0, 5},
-        {"P2", 2, 3},
-        {"P3", 4, 1}
-    };
-
-    calculateFCFS(procs);
-    display(procs);
+    cout << "\nThoi gian cho trung binh: " << sumWT / n;
+    cout << "\nThoi gian hoan thanh trung binh: " << sumTAT / n << endl;
 
     return 0;
 }

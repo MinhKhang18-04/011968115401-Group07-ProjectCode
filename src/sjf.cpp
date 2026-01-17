@@ -21,8 +21,7 @@ void solveSJF(string filename) {
     vector<Process> proc;
     ifstream file(filename);
     string line, word;
-
-    // Đọc file CSV (bỏ qua dòng header)
+    
     getline(file, line); 
     while (getline(file, line)) {
         stringstream ss(line);
@@ -43,7 +42,6 @@ void solveSJF(string filename) {
         int idx = -1;
         int minBurst = 1e9;
 
-        // Tìm tiến trình có Burst Time nhỏ nhất trong các tiến trình đã đến
         for (int i = 0; i < n; i++) {
             if (proc[i].arrivalTime <= currentTime && !proc[i].isCompleted) {
                 if (proc[i].burstTime < minBurst) {
@@ -66,13 +64,12 @@ void solveSJF(string filename) {
                  << proc[idx].burstTime << "\t" << proc[idx].finishTime << "\t" 
                  << proc[idx].waitingTime << "\t" << proc[idx].turnaroundTime << endl;
         } else {
-            currentTime++; // Nếu không có tiến trình nào sẵn sàng, tăng thời gian
+            currentTime++; 
         }
     }
 }
 
 int main() {
-    // Đảm bảo file input.csv nằm cùng thư mục hoặc đúng đường dẫn src/
     solveSJF("input.csv"); 
     return 0;
 }

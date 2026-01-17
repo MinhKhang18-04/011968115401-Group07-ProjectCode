@@ -22,7 +22,7 @@ int main() {
     vector<Process> p;
     string line;
 
-    getline(file, line); // skip header
+    getline(file, line);
     while (getline(file, line)) {
         stringstream ss(line);
         Process pr;

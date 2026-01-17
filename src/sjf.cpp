@@ -36,7 +36,7 @@ void solveSJF(string filename) {
     int currentTime = 0, completed = 0;
     int n = proc.size();
 
-    cout << "\n--- KET QUA THUAT TOAN SJF ---\n";
+    cout << "SJF Scheduling Result\n";
     cout << "PID\tArrival\tBurst\tFinish\tWait\tTurnaround\n";
 
     while (completed < n) {

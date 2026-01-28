@@ -168,15 +168,7 @@ int main() {
         cout << "Invalid choice.\n";
         return 0;
     }
-
-    // ===== 5) Print Gantt =====
-    cout << "\nGantt Chart:\n";
-    for (auto &s : gantt) cout << "| " << s.name << " ";
-    cout << "|\n";
-    for (auto &s : gantt) cout << s.start << " ";
-    cout << gantt.back().end << "\n";
-
-    // ===== 6) Print Table =====
+    // ===== 5) Print Table =====
     cout << "\nPID     Arr   Burst  Start  End    WT     TAT\n";
     double avgWT = 0, avgTAT = 0;
     for (auto &p : ps) {

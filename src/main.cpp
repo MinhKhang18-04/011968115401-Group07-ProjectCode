@@ -186,6 +186,17 @@ int main() {
     avgTAT /= ps.size();
     cout << "\nAverage WT = " << avgWT << "\n";
     cout << "Average TAT = " << avgTAT << "\n";
+    cout << "\nGantt Chart:\n|";
+    for (const auto& seg : gantt) {
+        cout << " " << seg.name << " |";
+    }
+    cout << "\n";
 
-    return 0;
+    cout << gantt[0].start;
+    for (const auto& seg : gantt) {
+        int width = seg.name.length() + 3;
+        cout << setw(width) << right << seg.end;
+    }
+    cout << endl;
 }
+return 0;

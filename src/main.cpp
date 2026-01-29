@@ -198,5 +198,5 @@ int main() {
         cout << setw(width) << right << seg.end;
     }
     cout << endl;
+    return 0;
 }
-return 0;

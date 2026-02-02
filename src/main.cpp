@@ -21,13 +21,12 @@ struct Process {
 };
 
 struct Segment {
-    string name; // PID or "IDLE"
+    string name;
     int start;
     int end;
 };
 
 int main() {
-    // ===== 1) Read CSV =====
     ifstream fin("input.csv");
     if (!fin) {
         cout << "ERROR: Cannot open input.csv\n";
@@ -36,7 +35,7 @@ int main() {
 
     vector<Process> ps;
     string line;
-    getline(fin, line); // skip header
+    getline(fin, line); 
 
     while (getline(fin, line)) {
         if (line.size() == 0) continue;
@@ -52,10 +51,7 @@ int main() {
         p.pid = pid;
         p.arrival = stoi(a);
         p.burst = stoi(b);
-
-        // init result
         p.start = p.finish = p.waiting = p.tat = 0;
-
         ps.push_back(p);
     }
 
@@ -64,7 +60,6 @@ int main() {
         return 1;
     }
 
-    // ===== 2) Choose algorithm =====
     cout << "CPU Scheduling Demo\n";
     cout << "1) FCFS\n";
     cout << "2) SJF (Non-preemptive)\n";
@@ -74,9 +69,7 @@ int main() {
 
     vector<Segment> gantt;
 
-    // ===== 3) FCFS =====
     if (choice == 1) {
-        // sort by arrival (simple bubble sort to keep it easy)
         for (int i = 0; i < (int)ps.size(); i++) {
             for (int j = i + 1; j < (int)ps.size(); j++) {
                 if (ps[j].arrival < ps[i].arrival) {
@@ -100,7 +93,6 @@ int main() {
             ps[i].waiting = ps[i].tat - ps[i].burst;
         }
 
-        // export CSV
         ofstream fout("output_fcfs.csv");
         fout << "PID,Arrival,Burst,Start,Completion,Waiting,Turnaround\n";
         for (auto &p : ps) {
@@ -111,7 +103,6 @@ int main() {
         cout << "\nExported: output_fcfs.csv\n";
     }
 
-    // ===== 4) SJF Non-preemptive =====
     else if (choice == 2) {
         int n = (int)ps.size();
         vector<int> done(n, 0);
@@ -120,8 +111,6 @@ int main() {
 
         while (finished < n) {
             int chosen = -1;
-
-            // find process ready & shortest burst
             for (int i = 0; i < n; i++) {
                 if (done[i] == 0 && ps[i].arrival <= time) {
                     if (chosen == -1) chosen = i;
@@ -131,7 +120,6 @@ int main() {
             }
 
             if (chosen == -1) {
-                // no ready -> jump to next arrival (IDLE)
                 int nextArr = INT_MAX;
                 for (int i = 0; i < n; i++) {
                     if (done[i] == 0 && ps[i].arrival < nextArr) nextArr = ps[i].arrival;
@@ -145,15 +133,11 @@ int main() {
             ps[chosen].finish = time + ps[chosen].burst;
             gantt.push_back({ps[chosen].pid, ps[chosen].start, ps[chosen].finish});
             time = ps[chosen].finish;
-
             ps[chosen].tat = ps[chosen].finish - ps[chosen].arrival;
             ps[chosen].waiting = ps[chosen].tat - ps[chosen].burst;
-
             done[chosen] = 1;
             finished++;
         }
-
-        // export CSV
         ofstream fout("output_sjf.csv");
         fout << "PID,Arrival,Burst,Start,Completion,Waiting,Turnaround\n";
         for (auto &p : ps) {
@@ -168,7 +152,6 @@ int main() {
         cout << "Invalid choice.\n";
         return 0;
     }
-    // ===== 5) Print Table =====
     cout << "\nPID     Arr   Burst  Start  End    WT     TAT\n";
     double avgWT = 0, avgTAT = 0;
     for (auto &p : ps) {

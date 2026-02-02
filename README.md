@@ -1,5 +1,3 @@
-Sure — here is the **full README in English** (same content as the previous version, just translated and cleaned into a proper GitHub-style README).
-
 ---
 
 # CPU Scheduling Algorithms Demonstration (FCFS & SJF Non-preemptive)

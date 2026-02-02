@@ -1,4 +1,3 @@
----
 
 # CPU Scheduling Algorithms Demonstration (FCFS & SJF Non-preemptive)
 
